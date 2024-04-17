@@ -1,4 +1,4 @@
-module github.com/xiaojiaoyu100/cast
+module github.com/Ficoto/cast
 
 go 1.13
 
