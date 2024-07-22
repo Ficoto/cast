@@ -40,6 +40,7 @@ type Cast struct {
 	logger             *logrus.Logger
 	h                  circuit.Manager
 	defaultCircuitName string
+	certificates       []tls.Certificate
 }
 
 // New returns an instance of Cast
@@ -91,13 +92,15 @@ func New(sl ...Setter) (*Cast, error) {
 			DialContext: (&net.Dialer{
 				Timeout:   30 * time.Second,
 				KeepAlive: 30 * time.Second,
-				DualStack: true,
 			}).DialContext,
 			MaxIdleConns:          2000,
 			MaxIdleConnsPerHost:   2000,
 			IdleConnTimeout:       90 * time.Second,
 			TLSHandshakeTimeout:   10 * time.Second,
 			ExpectContinueTimeout: 1 * time.Second,
+			TLSClientConfig: &tls.Config{
+				Certificates: c.certificates,
+			},
 		},
 		Timeout: c.httpClientTimeout,
 	}

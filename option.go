@@ -1,6 +1,7 @@
 package cast
 
 import (
+	"crypto/tls"
 	"fmt"
 	"net/http"
 	"time"
@@ -242,6 +243,13 @@ func WithDefaultCircuit(name string) Setter {
 func AddRequestHook(hks ...RequestHook) Setter {
 	return func(c *Cast) error {
 		c.requestHooks = append(c.requestHooks, hks...)
+		return nil
+	}
+}
+
+func WithCertificates(certificates ...tls.Certificate) Setter {
+	return func(c *Cast) error {
+		c.certificates = append(c.certificates, certificates...)
 		return nil
 	}
 }
